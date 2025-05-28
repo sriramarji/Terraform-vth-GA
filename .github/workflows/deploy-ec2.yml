@@ -1,18 +1,27 @@
 name: Launch and Terminate EC2 Instance
 
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
     inputs:
+      ami_id:
+        description: 'AMI ID for the EC2 instance'
+        required: true
+      instance_type:
+        description: 'EC2 instance type (e.g., t2.micro)'
+        required: true
+      key_name:
+        description: 'Key pair name'
+        required: true
+      security_group:
+        description: 'Security group name'
+        required: true
       instance_id:
-        description: 'EC2 Instance ID to terminate'
+        description: 'EC2 Instance ID to terminate (optional)'
         required: false
         default: ''
 
 jobs:
-  launch-ec2:
+  manage-ec2:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,11 +37,12 @@ jobs:
 
     - name: Launch EC2 instance
       run: |
+        echo "Launching EC2 instance with AMI ID: ${{ github.event.inputs.ami_id }}"
         aws ec2 run-instances \
-          --image-id ami-084568db4383264d4 \
-          --instance-type t2.micro \
-          --key-name Hcl-prac-training \
-          --security-groups test-prac-nvirg-sg
+          --image-id ${{ github.event.inputs.ami_id }} \
+          --instance-type ${{ github.event.inputs.instance_type }} \
+          --key-name ${{ github.event.inputs.key_name }} \
+          --security-groups ${{ github.event.inputs.security_group }}
 
     - name: Terminate EC2 instance (if instance_id is provided)
       if: ${{ github.event.inputs.instance_id != '' }}
