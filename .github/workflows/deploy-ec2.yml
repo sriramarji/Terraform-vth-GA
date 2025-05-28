@@ -52,7 +52,7 @@ jobs:
           --security-groups ${{ github.event.inputs.security_group }}
 
     - name: Terminate EC2 instance
-      if: ${{ github.event.inputs.mode == 'terminate' }}
+      if: ${{ github.event.inputs.mode == 'destroy' }}
       run: |
         echo "Terminating EC2 instance: ${{ github.event.inputs.instance_id }}"
         aws ec2 terminate-instances --instance-ids ${{ github.event.inputs.instance_id }}
