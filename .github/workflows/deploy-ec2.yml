@@ -1,6 +1,9 @@
 name: Launch EC2 Instance
 
 on:
+  push:
+     branches:
+       - master
   workflow_dispatch:
 
 jobs:
@@ -21,7 +24,8 @@ jobs:
     - name: Launch EC2 instance
       run: |
         aws ec2 run-instances \
-          --image-id ami-084568db4383264d4 \  # Replace with your AMI ID
+          --image-id ami-084568db4383264d4 \
           --instance-type t2.micro \
-          --key-name Hcl-prac-training \           # Replace with your key pair name
-          --security-groups test-prac-nvirg-sg  # Replace with your security group
+          --key-name Hcl-prac-training \
+          --security-groups test-prac-nvirg-sg
+
