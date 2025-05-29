@@ -1,4 +1,4 @@
-name: Manage EC2 Instance
+name: Creation of EC2 Instance with OIDC
 
 on:
   workflow_dispatch:
